@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="195c515e-ee37-4c15-8c98-82224e8a4d5d" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="errorhandlingFlow" doc:id="a57cfddd-c982-4767-b98e-f91653ffa5c1" >
+		<http:listener doc:name="Listener" doc:id="9927a900-dff5-45fc-b742-883473d7faf9" config-ref="HTTP_Listener_config" path="/error"/>
+		<logger level="INFO" doc:name="Logger" doc:id="3df24589-d2bb-40ac-85ec-7405345d92e3" message="**logger before error***"/>
+		<raise-error doc:name="Raise error" doc:id="2df2abe2-c524-477e-8eaf-c51eff195070" type="MULE:VALIDATION" description="Validation Error"/>
+		<logger level="INFO" doc:name="Logger" doc:id="724dfd53-4431-4b38-a404-bc0df33cb9e9" message="Main Flow"/>
+		<error-handler>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="53caf438-fec4-486d-a0cb-5621a7d0aa5e" >
+				<logger level="INFO" doc:name="Logger" doc:id="fdba9e01-95ad-4427-bb5f-250ff64989a6" message="***logger1***"/>
+				<logger level="INFO" doc:name="Logger" doc:id="ef60782e-6d9e-4a9d-b1fc-65c503904217" message="***lgger2***"/>
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>
